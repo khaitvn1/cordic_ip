@@ -1,0 +1,3 @@
+class simple_uvm_template_test extends base_uvm_template_test;
+
+endclass : simple_uvm_template_test

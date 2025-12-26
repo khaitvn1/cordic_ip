@@ -1,1 +1,1 @@
-# pipelined_cordic_ip
+# Pipelined CORDIC Trigonometric & Vector Processing IP Core
