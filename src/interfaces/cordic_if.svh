@@ -9,13 +9,16 @@ interface cordic_if #(int XY_W = 16, int ANGLE_W = 32)(input logic clk);
     logic signed [XY_W-1:0] cos_out, sin_out, mag_out;
     logic signed [ANGLE_W-1:0] theta_out;
 
-    modport drv (
-        input clk, in_ready, out_valid, cos_out, sin_out, mag_out, theta_out,
-        output rst_n, in_valid, x_in, y_in, z_in, out_ready
-    );
+    clocking drv_cb @(posedge clk);
+        output in_valid, x_in, y_in, z_in, out_ready;
+        input in_ready, out_valid;
+    endclocking
 
-    modport mon (
-        input clk, rst_n, in_valid, in_ready, x_in, y_in, z_in,
-        out_valid, out_ready, cos_out, sin_out, mag_out, theta_out
-    );
+    clocking mon_cb @(posedge clk);
+        input rst_n, in_valid, in_ready, x_in, y_in, z_in;
+        input out_valid, out_ready, cos_out, sin_out, mag_out, theta_out;
+    endclocking
+
+    modport drv (clocking drv_cb);
+    modport mon (clocking mon_cb);
 endinterface

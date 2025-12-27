@@ -1,5 +1,6 @@
-// Interface file
+// Interface and package file
 ../src/interfaces/cordic_if.svh
+../src/packages/cordic_tb_pkg.svh
 
 // Source files
 ../src/rtl/cordic_pkg.sv

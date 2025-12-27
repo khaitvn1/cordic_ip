@@ -32,13 +32,13 @@ module cordic_dut_uvm #(
             ) u_rotator (
                 .clk(clk),
                 .rst_n(rst_n),
-                .in_valid(),
-                .in_ready(),
+                .in_valid(in_valid),
+                .in_ready(in_ready),
                 .x_start(x_in),
                 .y_start(y_in),
                 .angle(z_in),
-                .out_valid(),
-                .out_ready(),
+                .out_valid(out_valid),
+                .out_ready(out_ready),
                 .cosine(cos_out),
                 .sine(sin_out)
             );
@@ -54,12 +54,12 @@ module cordic_dut_uvm #(
             ) u_vectoring (
                 .clk(clk),
                 .rst_n(rst_n),
-                .in_valid(),
-                .in_ready(),
+                .in_valid(in_valid),
+                .in_ready(in_ready),
                 .x_start(x_in),
                 .y_start(y_in),
-                .out_valid(),
-                .out_ready(),
+                .out_valid(out_valid),
+                .out_ready(out_ready),
                 .mag(mag_out),
                 .theta(theta_out)
             );

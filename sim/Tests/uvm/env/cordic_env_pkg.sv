@@ -2,6 +2,8 @@ package cordic_env_pkg;
 
   `include "uvm_macros.svh"
   import uvm_pkg::*;
+  import cordic_tb_pkg::*;
+  import cordic_pkg::*;
   import cordic_seq_pkg::*;
   import cordic_agent_pkg::*;
   `include "cordic_sb.sv"
