@@ -11,7 +11,7 @@ interface cordic_if #(int XY_W = 16, int ANGLE_W = 32)(input logic clk);
 
     clocking drv_cb @(posedge clk);
         output in_valid, x_in, y_in, z_in, out_ready;
-        input in_ready, out_valid;
+        input rst_n, in_ready, out_valid;
     endclocking
 
     clocking mon_cb @(posedge clk);

@@ -55,7 +55,6 @@ module cordic_tb_top;
         $shm_probe("AS");
 
         uvm_config_db#(virtual cordic_if.drv)::set(null, "*drv*", "vif", vif);
-        uvm_config_db#(virtual cordic_if.mon)::set(null, "*drv*", "mon_vif", vif); // <-- for driver reset sampling
         uvm_config_db#(virtual cordic_if.mon)::set(null, "*mon*", "vif", vif);
 
         cfg = cordic_cfg::type_id::create("cfg");

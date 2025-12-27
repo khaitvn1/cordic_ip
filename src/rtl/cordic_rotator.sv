@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module cordic_rotator #(
     parameter int XY_W = 16,
     parameter int ANGLE_W = 32,

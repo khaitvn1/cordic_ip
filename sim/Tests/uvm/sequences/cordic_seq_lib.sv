@@ -1,7 +1,3 @@
-import uvm_pkg::*;
-`include "uvm_macros.svh"
-import cordic_tb_pkg::*;
-
 class rot_directed_seq extends base_cordic_seq;
     `uvm_object_utils(rot_directed_seq)
 

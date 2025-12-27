@@ -1,4 +1,3 @@
-`timescale 1ns/1ps
 // top-level wrapper for CORDIC rotator and vectoring IP cores (Basys3 (Xilinx Artix-7) demo)
 
 module cordic_top (

@@ -1,58 +1,53 @@
-import uvm_pkg::*;
-`include "uvm_macros.svh"
-import cordic_pkg::*;
-import cordic_tb_pkg::*;
-
 class cordic_sb extends uvm_scoreboard;
     `uvm_component_utils(cordic_sb)
+
     uvm_analysis_imp #(cordic_seq_item, cordic_sb) item_collect_export;
 
     cordic_cfg cfg;
 
     int num_in, num_correct, num_incorrect;
 
-    localparam real PI = 3.14159265358979323846;
-
     function new(string name="cordic_sb", uvm_component parent=null);
         super.new(name, parent);
         item_collect_export = new("item_collect_export", this);
+        num_in = 0; num_correct = 0; num_incorrect = 0;
     endfunction
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        if (!uvm_config_db#(cordic_cfg)::get(this, "", "cfg", cfg)) begin
-            `uvm_fatal("NOCFG", "cordic_sb: missing cordic_cfg (set via config_db in tb_top/test)")
-        end
+        if (!uvm_config_db#(cordic_cfg)::get(this, "", "cfg", cfg))
+        `uvm_fatal("NOCFG", "cordic_sb: missing cordic_cfg (set via config_db in tb_top/test)")
     endfunction
 
     function int abs_i(int v);
         return (v < 0) ? -v : v;
     endfunction
 
-    // Q1 to 15 (avoid casts)
+    // Q1.15 helpers (avoid casts)
     function real q1_15_to_real(logic signed [15:0] q);
         return real'($signed(q)) / 32768.0;
     endfunction
 
     function int real_to_q1_15_int(real r);
-        // Return as int (LSBs). HW may overflow/wrap;
+        // Return as int (LSBs); can slice as needed later
         return $rtoi(r * 32768.0);
     endfunction
 
     // Angle format: pi == 0x8000_0000 => rad = ang * pi / 2^31
     function real ang32_to_rad(logic signed [31:0] ang);
-        return real'($signed(ang)) * PI / (2.0**31);
+        return real'($signed(ang)) * cordic_pkg::PI / (2.0**31);
     endfunction
 
     function logic signed [31:0] rad_to_ang32(real rad);
         real scaled;
         // clamp to [-pi, pi)
-        if (rad >= PI) begin
-            rad = rad - 2.0*PI;
-        end else if (rad < -PI) begin
-            rad = rad + 2.0*PI;
+        if (rad >= cordic_pkg::PI) begin
+            rad = rad - 2.0*cordic_pkg::PI;
         end
-        scaled = rad * (2.0**31) / PI;
+        if (rad < -cordic_pkg::PI) begin
+            rad = rad + 2.0*cordic_pkg::PI;
+        end
+        scaled = rad * (2.0**31) / cordic_pkg::PI;
         return $signed($rtoi(scaled));
     endfunction
 
@@ -62,19 +57,16 @@ class cordic_sb extends uvm_scoreboard;
         ua = {32'd0, a};
         ub = {32'd0, b};
         d  = (ua - ub) & 64'hFFFF_FFFF;
-        if (d > 64'h8000_0000) begin 
+        if (d > 64'h8000_0000) begin
             d = 64'h1_0000_0000 - d;
         end
         return d;
     endfunction
 
     function real gain_factor();
-        // DUT uses KINV_Q15 to COMPENSATE if GAIN_COMP==1
-        // If gain_comp enabled => outputs match true math => g=1
-        // Else => outputs include CORDIC gain K = 1/kinv
         real kinv;
         kinv = real'($signed(cordic_pkg::KINV_Q15)) / (2.0**cordic_pkg::KINV_SHIFT);
-        if (cfg.gain_comp) begin 
+        if (cfg.gain_comp) begin
             return 1.0;
         end else begin
             return 1.0 / kinv;
@@ -141,7 +133,7 @@ class cordic_sb extends uvm_scoreboard;
             dm = abs_i(got_mag_i - $signed(exp_mag_w));
 
             exp_theta = rad_to_ang32($atan2(yr, xr));
-            dth       = ang_dist32(tr.theta_out, exp_theta);
+            dth = ang_dist32(tr.theta_out, exp_theta);
 
             if (dm <= cfg.tol_xy_lsb && dth <= longint'(cfg.tol_theta_lsb)) begin
                 num_correct++;
@@ -161,11 +153,10 @@ class cordic_sb extends uvm_scoreboard;
         super.report_phase(phase);
         `uvm_info(get_type_name(), $sformatf("Scoreboard: Total=%0d Correct=%0d Incorrect=%0d", num_in, num_correct, num_incorrect), UVM_LOW)
 
-        if (num_incorrect > 0) begin
+        if (num_incorrect > 0)
             `uvm_error(get_type_name(), "Simulation FAILED")
-        end else begin
+        else
             `uvm_info(get_type_name(), "Simulation PASSED", UVM_LOW)
-        end
     endfunction
 
 endclass : cordic_sb
