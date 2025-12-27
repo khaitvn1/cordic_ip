@@ -76,7 +76,7 @@ module tb_cordic_vectoring;
   endtask
 
   // receive 1 sample
-  task automatic recv_one(input int stall_prob_percent, output logic signed [XY_W-1:0] got_m, output logic signed [ANGLE_W-1:0] got_th);
+  task automatic receive_one(input int stall_prob_percent, output logic signed [XY_W-1:0] got_m, output logic signed [ANGLE_W-1:0] got_th);
     int cyc;
     begin
       got_m = 'x;
@@ -132,7 +132,7 @@ module tb_cordic_vectoring;
       end
 
       send_one(x, y);
-      recv_one(got_m, got_th, 25);
+      receive_one(got_m, got_th, 25);
 
       if (has_x_vec(got_m) || has_x_ang(got_th)) begin
         $display("FAIL: Captured X on output: mag=%b theta=%b", got_m, got_th);

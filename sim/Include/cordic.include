@@ -1,0 +1,34 @@
+// Interface file
+../src/interfaces/cordic_if.svh
+
+// Source files
+../src/rtl/cordic_pkg.sv
+../src/rtl/cordic_preproc.sv
+../src/rtl/cordic_preproc_vec.sv
+../src/rtl/cordic_stage.sv
+../src/rtl/cordic_rotator.sv
+../src/rtl/cordic_vectoring.sv
+../src/rtl/cordic_dut_uvm.sv
+
+// UVM packages files
+Tests/uvm/sequences/cordic_seq_pkg.sv
+Tests/uvm/agent/cordic_agent_pkg.sv
+Tests/uvm/env/cordic_env_pkg.sv
+Tests/uvm/tests/cordic_test_pkg.sv
+
+// UVM TB components
+Tests/uvm/sequences/cordic_seq_item.sv
+Tests/uvm/sequences/cordic_sequence.svh
+Tests/uvm/sequences/cordic_seq_lib.sv
+Tests/uvm/agent/cordic_sequencer.sv
+Tests/uvm/agent/cordic_driver.sv
+Tests/uvm/agent/cordic_monitor.sv
+Tests/uvm/agent/cordic_timing_item.sv
+Tests/uvm/agent/cordic_agent.sv
+Tests/uvm/env/cordic_sb.sv
+Tests/uvm/env/cordic_env.sv
+Tests/uvm/tests/cordic_base_test.svh
+Tests/uvm/tests/cordic_test_lib.sv
+
+// TB top file
+Tests/uvm/tb/cordic_tb_top.sv

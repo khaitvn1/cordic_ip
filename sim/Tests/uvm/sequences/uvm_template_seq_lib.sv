@@ -1,3 +1,0 @@
-class simple_uvm_template_seq extends base_uvm_template_seq;
-
-endclass : simple_uvm_template_seq
