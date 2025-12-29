@@ -25,37 +25,40 @@ class all_cordic_test extends base_cordic_test;
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
 
-        if (!uvm_config_db#(cordic_cfg)::get(this, "", "cfg", cfg))
-        `uvm_fatal(get_type_name(), "Missing cordic_cfg in all_cordic_test")
+        if (!uvm_config_db#(cordic_cfg)::get(this, "", "cfg", cfg)) begin
+            `uvm_fatal(get_type_name(), "Missing cordic_cfg in all_cordic_test")
+        end
     endfunction
 
     task run_phase(uvm_phase phase);
+        rot_directed_seq s_dir;
+        rot_random_seq s_rnd;
+        vec_directed_seq v_dir;
+        vec_random_seq v_rnd;
+        cordic_backpressure_seq bp_seq;
+
         super.run_phase(phase);
         phase.raise_objection(this, "all_cordic_test start");
 
         if (cfg.mode == CORDIC_ROT) begin
-            rot_directed_seq s_dir;
-            rot_random_seq   s_rnd;
-
             s_dir = rot_directed_seq::type_id::create("s_dir");
             s_rnd = rot_random_seq::type_id::create("s_rnd");
-
             s_dir.start(env.agt.seqr);
-
             s_rnd.n_items = 500;
             s_rnd.start(env.agt.seqr);
-        end else begin // CORDIC_VEC
-            vec_directed_seq s_dir;
-            vec_random_seq   s_rnd;
-
-            s_dir = vec_directed_seq::type_id::create("s_dir");
-            s_rnd = vec_random_seq::type_id::create("s_rnd");
-
-            s_dir.start(env.agt.seqr);
-
-            s_rnd.n_items = 500;
-            s_rnd.start(env.agt.seqr);
+        end else begin
+            v_dir = vec_directed_seq::type_id::create("v_dir");
+            v_rnd = vec_random_seq::type_id::create("v_rnd");
+            v_dir.start(env.agt.seqr);
+            v_rnd.n_items = 500;
+            v_rnd.start(env.agt.seqr);
         end
+
+        bp_seq = cordic_backpressure_seq::type_id::create("bp_seq");
+        bp_seq.n_items = 100;
+        bp.ready_mode = READY_RANDOM;
+        bp_seq.start(env.agt.seqr);
+
         phase.drop_objection(this, "all_cordic_test done");
     endtask
 endclass

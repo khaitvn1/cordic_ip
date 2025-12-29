@@ -21,7 +21,7 @@ module cordic_tb_top;
     cordic_if #(.XY_W(16), .ANGLE_W(32)) vif (.clk(clk));
 
     localparam int MODE = 0; // 0: rotation, 1: vectoring
-    localparam int GAIN_COMP = 1
+    localparam int GAIN_COMP = 1;
 
     cordic_dut_uvm #(
         .MODE(MODE),
@@ -58,14 +58,21 @@ module cordic_tb_top;
         $shm_open("waves.shm");
         $shm_probe("AS");
 
-        uvm_config_db#(virtual cordic_if.drv)::set(null, "*drv*", "vif", vif);
-        uvm_config_db#(virtual cordic_if.mon)::set(null, "*mon*", "vif", vif);
+        uvm_config_db#(virtual cordic_if.drv)::set(null, "drv", "vif", vif);
+        uvm_config_db#(virtual cordic_if.mon)::set(null, "mon", "vif", vif);
 
         cfg = cordic_cfg::type_id::create("cfg");
+
         cfg.mode = (MODE == 0) ? CORDIC_ROT : CORDIC_VEC;
         cfg.gain_comp = GAIN_COMP;
         cfg.tol_xy_lsb = 10; // adjust as needed for tolerance (accumulated error due to quantization)
         cfg.tol_theta_lsb = 600000; // adjust as needed for tolerance (off by ~0.09 degrees)
+
+        cfg.ready_mode = READY_ALWAYS;
+        cfg.ready_low_pct = 20;
+        cfg.burst_start_pct = 10;
+        cfg.burst_low_min = 3;
+        cfg.burst_low_max = 12;
         uvm_config_db #(cordic_cfg)::set(uvm_root::get(), "*", "cfg", cfg);
         
         run_test();

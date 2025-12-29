@@ -12,24 +12,24 @@
 ../src/rtl/cordic_dut_uvm.sv
 
 // UVM packages files
-Tests/uvm/sequences/cordic_seq_pkg.sv
-Tests/uvm/agent/cordic_agent_pkg.sv
-Tests/uvm/env/cordic_env_pkg.sv
-Tests/uvm/tests/cordic_test_pkg.sv
+Testbench/sequences/cordic_seq_pkg.sv
+Testbench/agent/cordic_agent_pkg.sv
+Testbench/env/cordic_env_pkg.sv
+Testbench/tests/cordic_test_pkg.sv
 
 // UVM TB components
-Tests/uvm/sequences/cordic_seq_item.sv
-Tests/uvm/sequences/cordic_sequence.svh
-Tests/uvm/sequences/cordic_seq_lib.sv
-Tests/uvm/agent/cordic_sequencer.sv
-Tests/uvm/agent/cordic_driver.sv
-Tests/uvm/agent/cordic_monitor.sv
-Tests/uvm/agent/cordic_timing_item.sv
-Tests/uvm/agent/cordic_agent.sv
-Tests/uvm/env/cordic_sb.sv
-Tests/uvm/env/cordic_env.sv
-Tests/uvm/tests/cordic_base_test.svh
-Tests/uvm/tests/cordic_test_lib.sv
+Testbench/sequences/cordic_seq_item.sv
+Testbench/sequences/cordic_sequence.svh
+Testbench/sequences/cordic_seq_lib.sv
+Testbench/agent/cordic_sequencer.sv
+Testbench/agent/cordic_driver.sv
+Testbench/agent/cordic_monitor.sv
+Testbench/agent/cordic_timing_item.sv
+Testbench/agent/cordic_agent.sv
+Testbench/env/cordic_sb.sv
+Testbench/env/cordic_env.sv
+Testbench/tests/cordic_base_test.svh
+Testbench/tests/cordic_test_lib.sv
 
 // TB top file
-Tests/uvm/tb/cordic_tb_top.sv
+Testbench/tb/cordic_tb_top.sv
